@@ -1,0 +1,106 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-size: 17px;
+    font-weight: bold;
+    font-family: 'Mitr-Regular','Montserrat', sans-serif;
+  }
+  body {
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: #ffffff;
+    flex-direction: column;
+  }
+  * .menudropdown a {
+    text-decoration: none;
+  }
+  
+  * .menudropdown li {
+    list-style: none;
+
+
+  }
+  
+  .navbar {
+    width: 1230px;
+    background-color: #fff;
+    border-radius: 7px;
+    box-shadow: 0 1px 3px rgba(255, 255, 255, 0.9), 0 1px 2px rgba(0, 0, 0, 0.24);
+    position: relative;
+    margin: auto;
+  }
+  
+  .menudropdown {
+    display: flex;
+    margin: auto;
+
+  }
+  .menudropdown li {
+    display: flex;
+    align-items: center;
+    border-radius: 4px;
+    position: relative;
+    margin: auto;
+
+    --b: 0.0em;   /* the thickness of the line */
+  --c: white; /* the color */
+  
+  color: #0000;
+  padding-block: var(--b);
+  background: 
+    linear-gradient(var(--c) 50%,#000 0) 0% calc(100% - var(--_p,0%))/100% 200%,
+    linear-gradient(var(--c) 0 0) 0% var(--_p,0%)/var(--_p,0%) var(--b) no-repeat;
+  -webkit-background-clip: text,padding-box;
+          background-clip: text,padding-box;
+  transition: .3s var(--_s,0s) linear,background-size .3s calc(.3s - var(--_s,0s));
+  }  
+  .menudropdown li a {
+    padding: 20px 30px;
+    color: #83061d;
+  }
+  .menudropdown li a i {
+    margin-left: 5px;
+    font-size: 12px;
+    transition: 0.4s;
+  }
+  
+  .menudropdown li:hover {
+    
+    background-color: #83061d;
+    --_p: 100%;
+  --_s: .3s;
+
+    
+  }
+
+  .menudropdown li a:hover {
+    padding: 20px 30px;
+    color: white;
+  }
+
+  .dropdown {
+    position: absolute;
+    display: block;
+    background-color: #fff;
+    top: 120%;
+    opacity: 0;
+    visibility: hidden;
+    border-radius: 4px;
+    box-shadow: 0 1px 3px rgba(255, 255, 255, 0.9), 0 1px 2px rgba(0, 0, 0, 0.24);
+    transition: 0.3s;
+    left: 0;
+    width: 200px;
+  }
+  .dropdown-link:hover .dropdown {
+    top: 105%;
+    opacity: 1;
+    visibility: visible;
+    
+  }
+  .dropdown-link:hover a i {
+    transform: rotate(-180deg);
+    
+  }

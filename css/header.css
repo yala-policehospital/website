@@ -1,0 +1,16 @@
+*  {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+
+}
+
+.logo-top{
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    width: 1230px;
+    height: 100%;
+    background-color: #7d021a;
+
+}
