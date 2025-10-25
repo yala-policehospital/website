@@ -21,63 +21,13 @@
     
     <!-- end link -->
 	<style>
-	/* Reset พื้นฐาน */
-* {
+	* {
   box-sizing: border-box;
-  margin: 0;
-  padding: 0;
-  font-family: "Sarabun", sans-serif;
 }
 
-body {
-  background-color: #f0f0f0;       /* สีพื้นหลังเทาอ่อน */
-  color: #333;                     /* ตัวอักษรเทาเข้ม */
-  line-height: 1.6;
-}
+$max-img-width: 600px;
+$max-img-height: 400px;
 
-/* Header */
-header {
-  background-color: #3e3e3e;       /* สีเทาเข้ม */
-  color: white;
-  padding: 20px 0;
-  text-align: center;
-  box-shadow: 0 2px 4px rgba(0,0,0,0.2);
-}
-
-header h1 {
-  font-size: 28px;
-  letter-spacing: 1px;
-}
-
-/* Navigation */
-nav {
-  background-color: #5a5a5a;
-  display: flex;
-  justify-content: center;
-}
-
-nav a {
-  color: #fff;
-  padding: 14px 20px;
-  text-decoration: none;
-  transition: background 0.3s;
-}
-
-nav a:hover {
-  background-color: #6f6f6f;
-}
-
-/* ส่วนเนื้อหา */
-main {
-  max-width: 1200px;
-  margin: 30px auto;
-  padding: 20px;
-  background-color: #fff;          /* กล่องเนื้อหาเป็นขาว */
-  border-radius: 10px;
-  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
-}
-
-/* แกลเลอรี */
 img {
   max-width: 100%;
   vertical-align: top;
@@ -85,71 +35,51 @@ img {
 
 .gallery {
   display: flex;
-  margin: 10px auto;
-  max-width: 600px;
-  position: relative;
-  padding-top: calc(400 / 600 * 100%);
-}
-
-@media screen and (min-width: 600px) {
-  .gallery {
-    padding-top: 400px;
+    margin: 10px auto;
+    max-width: $max-img-width;
+    position: relative;
+    padding-top: $max-img-height/$max-img-width * 100%;
+    
+    @media screen and (min-width: $max-img-width){
+      padding-top: $max-img-height;
+    }
+  
+  &__img {
+    position: absolute;
+    top: 0;
+    left: 0;
+    opacity: 0;
+    transition: opacity 0.3s ease-in-out;
   }
+  
+   &__thumb {
+    padding-top: 6px;
+    margin: 6px;
+    display: block;
+  }
+  
+  &__selector {
+    position: absolute;
+    opacity: 0;
+    visibility: hidden;
+    
+    &:checked {
+      + .gallery__img {
+        opacity: 1;
+      }
+      ~ .gallery__thumb > img {
+        box-shadow: 0 0 0 3px #0be2f6;;
+      }
+    }
+  }
+  
+ 
 }
 
-.gallery__img {
-  position: absolute;
-  top: 0;
-  left: 0;
-  opacity: 0;
-  transition: opacity 0.3s ease-in-out;
-  border-radius: 10px;
-}
+<!-- css ifarme -->
 
-.gallery__thumb {
-  padding-top: 6px;
-  margin: 6px;
-  display: block;
-}
-
-.gallery__selector {
-  position: absolute;
-  opacity: 0;
-  visibility: hidden;
-}
-
-.gallery__selector:checked + .gallery__img {
-  opacity: 1;
-}
-
-.gallery__selector:checked ~ .gallery__thumb > img {
-  box-shadow: 0 0 0 3px #0be2f6;
-}
-
-/* Footer */
-footer {
-  text-align: center;
-  background-color: #3e3e3e;
-  color: white;
-  padding: 15px 0;
-  margin-top: 40px;
-  border-top: 3px solid #0be2f6;
-}
-
-/* ปุ่ม */
-button {
-  background-color: #6f6f6f;
-  color: white;
-  border: none;
-  padding: 10px 18px;
-  border-radius: 6px;
-  cursor: pointer;
-  transition: background 0.3s;
-}
-
-button:hover {
-  background-color: #828282;
-}
+<!--end css ifarme-->
+<!-- start header -->
 
 </style>
     
@@ -310,6 +240,7 @@ button:hover {
     
 </body>
 </html>
+
 
 
 
