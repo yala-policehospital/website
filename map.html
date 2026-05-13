@@ -1,46 +1,432 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
-    <style>
-        .material-symbols-outlined {
-          font-variation-settings:
-          'FILL' 0,
-          'wght' 400,
-          'GRAD' 0,
-          'opsz' 24
-        }
-        .contact{
-        font-size: 30px;
-        font-weight: bold;
-        color: #83061d;
-        font-family: 'Mitr-Regular','Montserrat', sans-serif;
-        }
-        .contact2{
-            font-size: 20px;
-            font-weight: 2;
-            color: #83061d;
-            font-family: 'Mitr-Regular','Montserrat', sans-serif;
-        }
-        </style>
-</head>
-<body>
-    <div>
-    <i class="material-symbols-outlined" style="font-size:45px;color:#83061d;text-shadow:2px 2px 4px #000000;">location_on</i>
-    <i class="contact">ติดต่อโรงพยาบาลยะลาสิริรัตนรักษ์</i>
-    </div><br>
-    <div>
-    <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3963.913551014267!2d101.27982337511008!3d6.532601923057275!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x31b3769c4726df73%3A0x5cb29331d107d348!2z4LmC4Lij4LiH4Lie4Lii4Liy4Lia4Liy4Lil4Lii4Liw4Lil4Liy4Liq4Li04Lij4Li04Lij4Lix4LiV4LiZ4Lij4Lix4LiB4Lip4LmM!5e0!3m2!1sth!2sth!4v1697421033227!5m2!1sth!2sth" width="1230px" height="500" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
-    </div><br>
-    <i class="material-symbols-outlined" style="font-size:45px;color:#83061d;text-shadow:2px 2px 4px #000000;">call</i>
-    <i class="contact">ที่อยู่-เบอร์ติดต่อสอบถาม</i><br>
-    <div><br>
-    <i class="contact2">โรงพยาบาลยะลาสิริรัตนรักษ์ 51 ถนนสุขยางค์ ตำบลสะเตง อำเภอเมืองยะลา จังหวัดยะลา 95000 โทร.073-274-766</i><br>
+# Quota 2569 Interactive Map (Ready-to-Use HTML)
 
+บันทึกไฟล์ด้านล่างเป็น `quota2569_map.html` แล้วเปิดด้วย Chrome หรือ Edge ได้ทันที
+
+```html
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <title>แผนที่โควตาทันตแพทย์ 2569</title>
+
+  <!-- Leaflet -->
+  <link
+    rel="stylesheet"
+    href="https://unpkg.com/leaflet/dist/leaflet.css"
+  />
+
+  <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+
+  <!-- Geocoder -->
+  <link
+    rel="stylesheet"
+    href="https://unpkg.com/leaflet-control-geocoder/dist/Control.Geocoder.css"
+  />
+
+  <script src="https://unpkg.com/leaflet-control-geocoder/dist/Control.Geocoder.js"></script>
+
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      font-family: sans-serif;
+    }
+
+    #map {
+      width: 100%;
+      height: 100vh;
+    }
+
+    .title-box {
+      position: absolute;
+      top: 10px;
+      left: 50px;
+      z-index: 1000;
+      background: white;
+      padding: 10px 14px;
+      border-radius: 8px;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.3);
+      font-size: 16px;
+      font-weight: bold;
+    }
+
+    .legend {
+      position: absolute;
+      bottom: 20px;
+      left: 10px;
+      z-index: 1000;
+      background: white;
+      padding: 10px;
+      border-radius: 8px;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.3);
+      line-height: 1.8;
+    }
+
+    .dot {
+      display: inline-block;
+      width: 12px;
+      height: 12px;
+      border-radius: 50%;
+      margin-right: 8px;
+    }
+
+    .zone11 {
+      background: red;
+    }
+
+    .zone12 {
+      background: blue;
+    }
+  </style>
+</head>
+
+<body>
+
+<div class="title-box">
+  แผนที่โควตาทันตแพทย์ 2569 เขตสุขภาพ 11-12
+</div>
+
+<div id="map"></div>
+
+<div class="legend">
+  <div><span class="dot zone11"></span> เขตสุขภาพ 11</div>
+  <div><span class="dot zone12"></span> เขตสุขภาพ 12</div>
+</div>
+
+<script>
+
+// เริ่มต้นแผนที่
+const map = L.map('map').setView([8.0, 99.5], 7);
+
+// แผนที่พื้นหลัง
+L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+  attribution: '&copy; OpenStreetMap contributors',
+  maxZoom: 18
+}).addTo(map);
+
+// สี marker ตามเขต
+function getColor(zone) {
+  return zone === '11' ? 'red' : 'blue';
+}
+
+// ข้อมูลสถานที่ (ใช้พิกัดจริงเพื่อให้แสดงผลแน่นอน)
+const locations = [
+  // เขต 11
+  {
+    h: '11',
+    n: 'โรงพยาบาลเกาะลันตา',
+    lat: 7.533,
+    lng: 99.086,
+    q: 1,
+    a: 'จังหวัดกระบี่'
+  },
+  {
+    h: '11',
+    n: 'โรงพยาบาลเขาพนม',
+    lat: 8.268,
+    lng: 99.051,
+    q: 1,
+    a: 'จังหวัดกระบี่'
+  },
+  {
+    h: '11',
+    n: 'โรงพยาบาลลำทับ',
+    lat: 8.042,
+    lng: 99.334,
+    q: 1,
+    a: 'จังหวัดกระบี่'
+  },
+  {
+    h: '11',
+    n: 'โรงพยาบาลอ่าวลึก',
+    lat: 8.377,
+    lng: 98.721,
+    q: 1,
+    a: 'จังหวัดกระบี่'
+  },
+  {
+    h: '11',
+    n: 'โรงพยาบาลกระบี่',
+    lat: 8.086,
+    lng: 98.906,
+    q: 1,
+    a: 'จังหวัดกระบี่'
+  },
+  {
+    h: '11',
+    n: 'โรงพยาบาลท่าแซะ',
+    lat: 10.668,
+    lng: 99.172,
+    q: 1,
+    a: 'จังหวัดชุมพร'
+  },
+  {
+    h: '11',
+    n: 'โรงพยาบาลปะทิว',
+    lat: 10.722,
+    lng: 99.374,
+    q: 1,
+    a: 'จังหวัดชุมพร'
+  },
+  {
+    h: '11',
+    n: 'โรงพยาบาลพะโต๊ะ',
+    lat: 9.790,
+    lng: 98.792,
+    q: 1,
+    a: 'จังหวัดชุมพร'
+  },
+  {
+    h: '11',
+    n: 'โรงพยาบาลละแม',
+    lat: 9.760,
+    lng: 99.092,
+    q: 1,
+    a: 'จังหวัดชุมพร'
+  },
+  {
+    h: '11',
+    n: 'โรงพยาบาลสวี',
+    lat: 10.235,
+    lng: 99.109,
+    q: 1,
+    a: 'จังหวัดชุมพร'
+  },
+  {
+    h: '11',
+    n: 'โรงพยาบาลหลังสวน',
+    lat: 9.953,
+    lng: 99.078,
+    q: 1,
+    a: 'จังหวัดชุมพร'
+  },
+  {
+    h: '11',
+    n: 'โรงพยาบาลขนอม',
+    lat: 9.204,
+    lng: 99.861,
+    q: 1,
+    a: 'จังหวัดนครศรีธรรมราช'
+  },
+  {
+    h: '11',
+    n: 'โรงพยาบาลสิชล',
+    lat: 9.007,
+    lng: 99.902,
+    q: 1,
+    a: 'จังหวัดนครศรีธรรมราช'
+  },
+  {
+    h: '11',
+    n: 'โรงพยาบาลตะกั่วทุ่ง',
+    lat: 8.245,
+    lng: 98.312,
+    q: 1,
+    a: 'จังหวัดพังงา'
+  },
+  {
+    h: '11',
+    n: 'โรงพยาบาลพังงา',
+    lat: 8.451,
+    lng: 98.531,
+    q: 1,
+    a: 'จังหวัดพังงา'
+  },
+  {
+    h: '11',
+    n: 'โรงพยาบาลตะกั่วป่า',
+    lat: 8.827,
+    lng: 98.364,
+    q: 1,
+    a: 'จังหวัดพังงา'
+  },
+  {
+    h: '11',
+    n: 'โรงพยาบาลกระบุรี',
+    lat: 10.447,
+    lng: 98.880,
+    q: 1,
+    a: 'จังหวัดระนอง'
+  },
+  {
+    h: '11',
+    n: 'โรงพยาบาลเกาะเต่า',
+    lat: 10.098,
+    lng: 99.840,
+    q: 1,
+    a: 'จังหวัดสุราษฎร์ธานี'
+  },
+  {
+    h: '11',
+    n: 'โรงพยาบาลดอนสัก',
+    lat: 9.314,
+    lng: 99.692,
+    q: 1,
+    a: 'จังหวัดสุราษฎร์ธานี'
+  },
+  {
+    h: '11',
+    n: 'โรงพยาบาลบ้านนาสาร',
+    lat: 8.836,
+    lng: 99.364,
+    q: 1,
+    a: 'จังหวัดสุราษฎร์ธานี'
+  },
+  {
+    h: '11',
+    n: 'โรงพยาบาลสุราษฎร์ธานี',
+    lat: 9.139,
+    lng: 99.333,
+    q: 1,
+    a: 'จังหวัดสุราษฎร์ธานี'
+  },
+
+  // เขต 12
+  {
+    h: '12',
+    n: 'โรงพยาบาลปะเหลียน',
+    lat: 7.244,
+    lng: 99.865,
+    q: 1,
+    a: 'จังหวัดตรัง'
+  },
+  {
+    h: '12',
+    n: 'โรงพยาบาลรัษฎา',
+    lat: 7.962,
+    lng: 99.633,
+    q: 1,
+    a: 'จังหวัดตรัง'
+  },
+  {
+    h: '12',
+    n: 'โรงพยาบาลสิเกา',
+    lat: 7.950,
+    lng: 99.339,
+    q: 1,
+    a: 'จังหวัดตรัง'
+  },
+  {
+    h: '12',
+    n: 'โรงพยาบาลตรัง',
+    lat: 7.559,
+    lng: 99.611,
+    q: 1,
+    a: 'จังหวัดตรัง'
+  },
+  {
+    h: '12',
+    n: 'โรงพยาบาลตะโหมด',
+    lat: 7.318,
+    lng: 100.161,
+    q: 1,
+    a: 'จังหวัดพัทลุง'
+  },
+  {
+    h: '12',
+    n: 'โรงพยาบาลป่าบอน',
+    lat: 7.269,
+    lng: 100.167,
+    q: 1,
+    a: 'จังหวัดพัทลุง'
+  },
+  {
+    h: '12',
+    n: 'โรงพยาบาลยะลา',
+    lat: 6.541,
+    lng: 101.281,
+    q: 1,
+    a: 'จังหวัดยะลา'
+  },
+  {
+    h: '12',
+    n: 'โรงพยาบาลเบตง',
+    lat: 5.774,
+    lng: 101.072,
+    q: 1,
+    a: 'จังหวัดยะลา'
+  },
+  {
+    h: '12',
+    n: 'โรงพยาบาลสทิงพระ',
+    lat: 7.473,
+    lng: 100.429,
+    q: 1,
+    a: 'จังหวัดสงขลา'
+  },
+  {
+    h: '12',
+    n: 'โรงพยาบาลหาดใหญ่',
+    lat: 7.008,
+    lng: 100.474,
+    q: 1,
+    a: 'จังหวัดสงขลา'
+  },
+  {
+    h: '12',
+    n: 'โรงพยาบาลละงู',
+    lat: 6.884,
+    lng: 99.790,
+    q: 1,
+    a: 'จังหวัดสตูล'
+  }
+];
+
+// เก็บตำแหน่งทั้งหมดเพื่อ zoom fit
+const latlngs = [];
+
+// ปักหมุด
+locations.forEach(loc => {
+
+  const latlng = [loc.lat, loc.lng];
+
+  latlngs.push(latlng);
+
+  const marker = L.circleMarker(latlng, {
+    radius: 8,
+    color: getColor(loc.h),
+    fillColor: getColor(loc.h),
+    fillOpacity: 0.8
+  }).addTo(map);
+
+  marker.bindPopup(`
+    <div style="font-size:14px; line-height:1.6;">
+      <b>${loc.n}</b><br>
+      เขตสุขภาพ: ${loc.h}<br>
+      จำนวนโควตา: ${loc.q}<br>
+      ${loc.a}
     </div>
-    
+  `);
+
+});
+
+// Zoom ให้เห็นทุกตำแหน่ง
+map.fitBounds(latlngs, {
+  padding: [40, 40]
+});
+
+</script>
+
 </body>
 </html>
+```
+
+## วิธีใช้งาน
+
+1. เปิด Notepad
+2. วางโค้ดทั้งหมด
+3. Save As → `quota2569_map.html`
+4. Encoding เลือก UTF-8
+5. เปิดไฟล์ด้วย Chrome หรือ Edge
+
+## สามารถเพิ่มต่อได้
+
+* เพิ่มจำนวนโควตาแต่ละแห่ง
+* เพิ่มข้อมูลครบทุกโรงพยาบาล
+* แยกสีตามจังหวัด
+* เพิ่ม Cluster รวม marker
+* Export เป็น PNG
+* ทำระบบค้นหาโรงพยาบาล
+* แสดงเฉพาะเขต 11 หรือ 12
